@@ -1,0 +1,344 @@
+<%@ Master Language="VB" CodeFile="MasterPage.master.vb" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bootstrap Material Design Sample</title>
+        
+        <!-- Mobile support -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Twitter Bootstrap -->
+        <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Material Design for Bootstrap -->
+        <link href="dist/css/roboto.min.css" rel="stylesheet">
+        <link href="dist/css/material-fullpalette.min.css" rel="stylesheet">
+        <link href="dist/css/ripples.min.css" rel="stylesheet">
+
+        <!-- Dropdown.js -->
+                        <link href="dist/css/jquery.dropdown.css" rel="stylesheet">
+
+        <!-- jQuery -->
+        <script src="dist/js/jquery-1.10.2.min.js"></script>
+        <!--myNavBarStyle-->
+        <style>
+            .navbar-default {
+                background-color: #007d40;
+                border-color: #044e2f;
+            }
+            .navbar-default .navbar-brand {
+                color: #e6e6e6;
+            }
+            .navbar-default .navbar-brand:hover,
+            .navbar-default .navbar-brand:focus {
+                color: #ffffff;
+            }
+            .navbar-default .navbar-text {
+                color: #e6e6e6;
+            }
+            .navbar-default .navbar-nav > li > a {
+                color: #e6e6e6;
+            }
+            .navbar-default .navbar-nav > li > a:hover,
+            .navbar-default .navbar-nav > li > a:focus {
+                color: #ffffff;
+            }
+            .navbar-default .navbar-nav > .active > a,
+            .navbar-default .navbar-nav > .active > a:hover,
+            .navbar-default .navbar-nav > .active > a:focus {
+                color: #ffffff;
+                background-color: #044e2f;
+            }
+            .navbar-default .navbar-nav > .open > a,
+            .navbar-default .navbar-nav > .open > a:hover,
+            .navbar-default .navbar-nav > .open > a:focus {
+                color: #ffffff;
+                background-color: #044e2f;
+            }
+            .navbar-default .navbar-toggle {
+                border-color: #044e2f;
+            }
+            .navbar-default .navbar-toggle:hover,
+            .navbar-default .navbar-toggle:focus {
+                background-color: #044e2f;
+            }
+            .navbar-default .navbar-toggle .icon-bar {
+                background-color: #e6e6e6;
+            }
+            .navbar-default .navbar-collapse,
+            .navbar-default .navbar-form {
+                border-color: #e6e6e6;
+            }
+            .navbar-default .navbar-link {
+                color: #e6e6e6;
+            }
+            .navbar-default .navbar-link:hover {
+                color: #ffffff;
+            }
+
+            @media (max-width: 767px) {
+                .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+                    color: #e6e6e6;
+                }
+                .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+                .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+                    color: #ffffff;
+                }
+                .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+                .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+                .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+                    color: #ffffff;
+                    background-color: #044e2f;
+                }
+            } 
+                        @media (max-width: 1249px) {
+              .navbar-header {
+                  float: none;
+              }
+              .navbar-left,.navbar-right {
+                  float: none !important;
+              }
+              .navbar-toggle {
+                  display: block;
+              }
+              .navbar-collapse {
+                  border-top: 1px solid transparent;
+                  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+              }
+              .navbar-fixed-top {
+                  top: 0;
+                  border-width: 0 0 1px;
+              }
+              .navbar-collapse.collapse {
+                  display: none!important;
+              }
+              .navbar-nav {
+                  float: none!important;
+                  margin-top: 7.5px;
+              }
+              .navbar-nav>li {
+                  float: none;
+              }
+              .navbar-nav>li>a {
+                  padding-top: 10px;
+                  padding-bottom: 10px;
+              }
+              .collapse.in{
+                  display:block !important;
+              }
+            }       
+        </style>
+        <!--My style-->
+       <style>
+                div.fix-top {
+                    position: fixed;
+                    width: 100%;
+                    top: 0px;
+                    left: 0px;
+                    z-index: 10;
+                }
+                div.body{
+                    margin-top: 115px;
+                }  
+        </style>
+    </head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <!--Our logo container-->
+            <div class="fix-top">
+                <div class="w3-container" style="background-color: #007D40;">
+                    <div>
+                        <img src="img/najaah.png" width="204" height="50" style="padding:3px">
+                    </div>
+                </div>
+                <!__The navgation bar__>
+                <div class="bs-component ">
+                    <div class="navbar navbar-default" style="background-color: #03633B; ">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-default-collapse">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="javascript:void(0)">
+                                    <span class="glyphicon">&#xe021;</span>
+                                </a>
+                            </div>
+                            <div class="navbar-collapse collapse navbar-default-collapse">
+                                <ul class="nav navbar-nav">
+                                    <!--<li class="active"><a href="javascript:void(0)">Active</a></li>
+                                    <li><a href="javascript:void(0)">Link</a></li>-->
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Plan
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)">Diagrams</a></li>
+                                            <li><a href="javascript:void(0)">Course</a></li>
+                                            <li><a href="javascript:void(0)">Schedules</a></li>
+                                            <!-- <li class="divider"></li>
+                                            <li class="dropdown-header">Dropdown header</li>-->
+                                            <li><a href="javascript:void(0)">Course List</a></li>
+                                            <li><a href="javascript:void(0)">Plan List</a></li>
+                                            <li><a href="javascript:void(0)">Student</a></li>
+                                            <li><a href="javascript:void(0)">Student List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Close Section Approval
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)">Approval Request for closed sections</a></li>
+                                            <li><a href="javascript:void(0)">Major</a></li>
+                                            <li><a href="javascript:void(0)">Major List</a></li>
+                                            <li><a href="javascript:void(0)">Sections</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Semstar Mangment
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)"></a></li>
+                                            <li><a href="javascript:void(0)">History</a></li>
+                                            <li><a href="javascript:void(0)">Semestar</a></li>
+                                            <li><a href="javascript:void(0)">Semestar List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Event Mangment
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)">Calender</a></li>
+                                            <li><a href="javascript:void(0)">Event</a></li>
+                                            <li><a href="javascript:void(0)">Event List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Instructor Manger
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)">Instructor</a></li>
+                                            <li><a href="javascript:void(0)">Instructor List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Transcript
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)">Transcript List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Group Manger
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="javascript:void(0)">Group List</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <!--Search text Field-->
+                                <form class="navbar-form navbar-right">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control col-md-8" placeholder="Search inside the page">
+                                    </div>
+                                </form>
+                                <!--<form class="navbar-form navbar-left">
+                                    <div class="form-group">
+                                    <input type="text" class="form-control col-md-8" placeholder="Search inside the page">
+                                    </div>
+                                </form>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li>
+                                        <a href="javascript:void(0)">Link</a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:void(0)">Action</a></li>
+                                            <li><a href="javascript:void(0)">Another action</a></li>
+                                            <li><a href="javascript:void(0)">Something else here</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript:void(0)">Separated link</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="body">
+                    <div class="row content">
+                        <div class="col-md-2">
+                            <!--<div class="panel panel-default">
+                                <div class="panel-body">
+                                    
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="col-md-8">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <asp:ContentPlaceHolder id="Main" runat="server">
+
+                                    </asp:ContentPlaceHolder>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <!--<div class="panel panel-default">
+                                <div class="panel-body">
+                                    
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Twitter Bootstrap -->
+            <script src="dist/js/bootstrap.min.js"></script>
+            <!-- Material Design for Bootstrap -->
+            <script src="dist/js/material.min.js"></script>
+            <script src="dist/js/ripples.min.js"></script>
+            <script>
+                $.material.init();
+            </script>
+</body>
+</html>
+
+
+                         <!--<div class="container-fluid">
+                            <button type="button" class="btn btn-default">Default</button>
+                            <button type="button" class="btn btn-primary">Primary</button>
+                            <button type="button" class="btn btn-success">Success</button>
+                            <button type="button" class="btn btn-info">Info</button>
+                            <button type="button" class="btn btn-warning">Warning</button>
+                            <button type="button" class="btn btn-danger">Danger</button>
+                            <button type="button" class="btn btn-link">Link</button>
+                            <div class="form-group">
+                                <label for="comment">Comment:</label>
+                                <textarea class="form-control" rows="5" id="comment"></textarea>
+                            </div>
+                        </div> -->

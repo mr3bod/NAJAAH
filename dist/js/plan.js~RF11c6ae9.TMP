@@ -1,0 +1,371 @@
+﻿var user = {
+    id: "",
+    name: "",
+    major: "",
+    advisor_ID: "",
+    advisor_Name: "",
+    GPA: ""
+};
+var plan;
+$(document).ready(function () {
+    updateMessage();
+    console.log(user)
+    var newTerms;
+    var cTerm;
+    var preCors;
+
+    setTimeout(function () {
+        cTerm = GetCurrentTerm(user);
+        preCors = GetPreCourses(user);
+        plan = GetCoursesList(user);
+    }, 100);
+    setTimeout(function () {
+       newTerms = GetNewTerms(cTerm);
+    }, 500);
+    var sems = ["#Freshman1", "#Freshman2", "#Summar1", "#Sphmor1", "#Sphmor2", "#Summar2", "#Junior1", "#Junior2", "#Summar3", "#Seneior1", "#Seneior2"];
+    var count = 0;
+    setTimeout(function () {
+        console.log(plan)
+        for (var k = 0; k < 12; k++) {
+            if (plan[k] !== undefined) {
+                plan[k].forEach(function (item) {
+                    if (item !== undefined)
+                        drawCourse(sems[k], item, count++, newTerms, preCors);
+                });
+            }
+        }
+        var inn = false;
+        $("div div svg rect, div div svg text").on("mouseover", function (event) {
+            inn = true;
+            console.log("in")
+            var idName = event.target.id;
+            preRequest(preCors, idName);
+        });
+        $("div div svg rect").on("mouseout", function (event) {
+            if (inn) {
+                console.log("out")
+                var ob = event.target.id;
+                var idName = $("#" + ob).parent()[0].id;
+                preRequestRemove(preCors, idName);
+                inn = false;
+            }
+        });
+    }, 1000);
+    Sortable.create(Freshman1, {group: "course", animation: 150, dragClass: "ghost"});
+    Sortable.create(Freshman2, { group: "course", animation: 150, dragClass: "ghost" });
+    Sortable.create(Summar1, { group: "course", animation: 150, chosenClass: "ghost" });
+    Sortable.create(Sphmor1, { group: "course", animation: 150, dragClass: "ghost" });
+    Sortable.create(Sphmor2, { group: "course", animation: 150, ghostClass: "ghost" });
+    Sortable.create(Summar2, { group: "course", animation: 150, chosenClass: "ghost" });
+    Sortable.create(Junior1, { group: "course", animation: 150, ghostClass: "ghost" });
+    Sortable.create(Junior2, { group: "course", animation: 150, ghostClass: "ghost" });
+    Sortable.create(Summar3, { group: "course", animation: 150, chosenClass: "ghost" });
+    Sortable.create(Seneior1, { group: "course", animation: 150, ghostClass: "ghost" });
+    Sortable.create(Seneior2, { group: "course", animation: 150, ghostClass: "ghost" });
+});
+
+function GetCoursesList(user) {
+    var plan = [];
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify({ e: user }),
+        cache: false,
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "Default3.aspx/GetCoursesList",
+        success: function (response) {
+            response.d.forEach(function (semstar) {
+                semstar.forEach(function (item) {
+                    var course = new Object();
+                    course.title = item.title;
+                    course.grade = item.grade;
+                    course.credit = item.credit;
+                    course.semster = item.semster;
+                    course.semCode = item.semCode;
+                    //console.log(course);
+                });
+                plan.push(semstar);
+            });
+            plan = response.d;
+        },
+        error: function (err) {
+            alert("cannot get your courses");
+        }
+    });
+    return plan;
+}
+
+function drawCourse(semestar, course, count, cTerm, preCors) {
+    var color = ['#aab2bd', '#F0AD4E', '#2ecc71', 'white', '#e1bee7'];
+    var len = 0;
+    if (course.semester !== null && course.semester.includes("\n")) {
+        len = course.semester.split("\n");
+        len = len.length;
+    }
+    var ii = 0;
+    var op = 0.8;
+    var idName = course.title.replace(/\s/g, '');
+    if (course.title.includes("XXX")) {
+        ii = 1;
+        op = 1;
+        idName = count;
+    }
+    else if(course.grade === null) {
+        ii = 3;
+        op = 1;
+       cTerm[0].forEach(function (item) {
+            if(item.course === course.title){
+                ii = 2;
+                var n = item.term;
+                var digits = ("" + n).split("");
+                var num = "" + digits[2] + "" + digits[3] + "" + digits[4];
+                course.semester = num;
+            }
+        }
+        );
+       cTerm[1].forEach(function (item) {
+           if (item.course === course.title) {
+               ii = 4;
+               var n = item.term;
+               var digits = ("" + n).split("");
+               var num = "" + digits[2] + "" + digits[3] + "" + digits[4];
+               course.semester = num;
+               op = 1;
+           }
+       });
+    }
+    $(semestar).append("<div class='hoverable'><svg id='svg-" + idName + "'width='108' height='70'></svg></div>");
+    var s = Snap("#svg-" + idName);
+    var rect = s.rect("25%", "20%", "72%", 65+len*5+"%", 5, 5);
+    var recID = "svg-"+idName+"r"
+    rect.attr({
+        fill: color[ii],
+        stroke: "#3b3939",
+        strokeWidth: "2px",
+        opacity: op,
+        id:recID
+    });
+    var c = s.text("30%", "45%", course.title);
+    c.attr(
+        "fill","black",
+        "font-size","12",
+        "font-family", "Verdana",
+    );
+    console.log(rect.id)
+    if (course.grade !== null && course.grade.includes("\n")) {
+        course.grade = course.grade.split("\n");
+        for (var i = 0; i < course.grade.length; i++) {
+            var g = s.text("30%", 68+i*20+"%", course.grade[i]);
+            g.attr(
+            "fill", "black",
+            "font-size", "12",
+            "font-family", "Verdana"
+            );
+        }
+
+    }else{
+    var g2 = s.text("30%", "68%", course.grade);
+    g2.attr(
+    "fill", "black",
+    "font-size", "12",
+    "font-family", "Verdana"
+);}
+    var cdt = s.text("84%", 79+len*5+"%", course.credit);
+    cdt.attr(
+    "fill", "black",
+    "font-size", "12",
+    "font-family", "Verdana"
+);
+    if (course.semester !== null && course.semester.includes("\n")) {
+        course.semester = course.semester.split("\n");
+        for (var i = 0; i < course.semester.length; i++) {
+            var sem = s.text("50%", 68 + i * 20 + "%", course.semester[i]);
+            sem.attr(
+            "fill", "black",
+            "font-size", "12",
+            "font-family", "Verdana");
+        }
+    } else {
+        var sem = s.text("50%", "68%", course.semester);
+        sem.attr(
+        "fill", "black",
+        "font-size", "12",
+        "font-family", "Verdana"
+        );
+    }
+}
+
+
+function GetCurrentTerm(user) {
+    var cTerm = [];
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify({ e: user }),
+        cache: false,
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "Default3.aspx/GetTemp",
+        success:
+            function (response) {
+            response.d.forEach(function (item) {
+                var t = new Object();
+                    t.course = item.course;
+                    t.crn = item.crn;
+                    t.term = item.term;
+                    cTerm.push(t);
+            });
+        },
+        error: function (err) {
+            alert("cannot get the current term courses");
+        }
+    });
+    var fTerm=[];
+    var sTerm = [];
+    var first = true;
+    var newTerms;
+       /* cTerm.forEach(function (item) {
+            if (first) {
+                fTerm.push(item);
+                first = false;
+            } else {
+                if (fTerm[0].term === item.term) {
+                    fTerm.push(item);
+                } else {
+                    sTerm.push(item);
+                }
+            }
+        });
+        /*for (var i = 0; i < cTerm.length; i++) {
+            if (i == 0) {
+                fTerm.push(cTerm[i]);
+            } else {
+                if (fTerm[0].term === cTerm[i].term) {
+                    fTerm.push(cTerm[i]);
+                } else {
+                    sTerm.push(cTerm[i]);
+                }
+            }
+        }
+        setTimeout(function () {
+    console.log(fTerm)
+            if (fTerm[0].term < sTerm[0].term) {
+                newTerms = [fTerm, sTerm];
+            } else {
+                newTerms = [sTerm, fTerm];
+            }
+        }, 100);*/
+    return cTerm;
+
+}
+
+function GetNewTerms(cTerm) {
+    var fTerm= [];
+    var sTerm= [];
+    var first = true;
+    var newTerms;
+    
+    for (var i = 0; i < cTerm.length; i++) {
+        if (i === 0) {
+            fTerm.push(cTerm[i]);
+        } else {
+            if (fTerm[0].term === cTerm[i].term) {
+                fTerm.push(cTerm[i]);
+            } else {
+                sTerm.push(cTerm[i]);
+            }
+        }
+    }
+    if (fTerm[0].term < sTerm[0].term) {
+        newTerms = [fTerm, sTerm];
+    } else {
+        newTerms = [sTerm, fTerm];
+    }
+    return newTerms;
+}
+
+function getCookie() {
+    var cname = "cookie-msg-test=";
+    var ca = document.cookie.split(';');
+    var decodedCookie = decodeURIComponent(ca);
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+    }
+    return c.substring(cname.length, c.length);
+}
+
+function updateMessage() {
+    var myJSON = getCookie();
+    user = JSON.parse(myJSON);
+    setTimeout(updateMessage, 100);
+}
+
+function GetPreCourses(user) {
+    var preCourses=[];
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify({ e: user }),
+        cache: false,
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "Default3.aspx/preCourses",
+        success: function (response) {
+            response.d.forEach(function (item) {
+                preCourses.push(item);
+            });
+        }
+        ,
+        error: function (err) {
+            alert("cannot get your pre requeset courses");
+        }
+    });
+    return preCourses;
+}
+
+function preRequest(preCors, idName) {
+            for (var k = 0; k < preCors.length; k++) {
+                var c=0;
+                if (idName.replace('svg-', '') === preCors[k][0].title.replace(/\s/g, '') && preCors[k].length > 1) {
+                   // var idName = "#svg-" + crs.title.replace(/\s/g, '');
+                    //console.log(idName);
+                    var s = Snap("#" + idName);
+                    var pre = s.image("./img/arrow.svg", "25%", 0, "70%", "19%");
+                    pre.attr({
+                        id:c
+                    });
+                    var first = true;
+                    for (i in preCors[k]) {
+                        if (!first) {
+                            //console.log(k)
+                            var idName2 = "#svg-" + preCors[k][i].title.replace(/\s/g, '');
+                            var s = Snap(idName2);
+                            if (s !== null) {
+                                c++
+                                var pre3 = s.image("./img/arrow-180.svg", "25%", "80.7%", "70%", "19%");
+                                pre3.attr({
+                                    id:c
+                                });}
+                        } else {
+                            first = false;
+                        }
+                    }
+                }
+            }
+}
+
+function preRequestRemove(preCors, idName) {
+    for (var k = 0; k < preCors.length; k++) {
+        if (idName.replace('svg-', '') === preCors[k][0].title.replace(/\s/g, '') && preCors[k].length > 1) {
+            // var idName = "#svg-" + crs.title.replace(/\s/g, '');
+            //console.log(idName);
+                $("#"+0).remove();
+            }
+            var first = true;
+            for (i in preCors[k]) {
+                if (!first) {
+                    $("#"+i).remove();
+                } else {
+                    first = false;
+                }
+            }
+        }
+    }
